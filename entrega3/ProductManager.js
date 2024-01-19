@@ -1,4 +1,3 @@
-
 class ProductManager {
     constructor(path) {
         this.products = [];
@@ -21,26 +20,30 @@ class ProductManager {
     }
 
     addProduct(productData) {
-        const isCodeDuplicate = this.products.some((product) => product.code === productData.code);
-
-        if (isCodeDuplicate) {
-            throw new Error(`Error Producto repetido, code: ${productData.code}`);
+        if (!productData || typeof productData !== 'object' || !productData.code) {
+            return Error('Datos del producto no válidos o propiedad "code" no encontrada.');
         }
-
+    
+        const isCodeDuplicate = this.products.some((product) => product && product.code === productData.code);
+    
+        if (isCodeDuplicate) {
+            return Error(`Error Producto repetido, code: ${productData.code}`);
+        }
+    
         const newProduct = {
             id: this.generateId(),
             ...productData,
         };
-
+    
         this.products.push(newProduct);
         return newProduct;
     }
-
+    
     getProductById(id) {
         const product = this.products.find((product) => product.id === id);
 
         if (!product) {
-            throw new Error('Producto no encontrado.');
+            return Error(`Producto con ID ${id} no encontrado.`);
         }
 
         return product;
@@ -56,26 +59,28 @@ class ProductManager {
 
         if (productIndex === -1) {
 
-            throw new Error('Producto no encontrado.');
+            return Error('Producto no encontrado.');
         }
 
         this.products[productIndex] = { ...this.products[productIndex], ...updatedFields };
 
         return this.products[productIndex];
     }
-
+    
     deleteProduct(id) {
-        const productIndex = this.findIndexById(id);
+        const product = this.products.find((product) => product.id === id);
 
-        if (productIndex === -1) {
-            throw new Error('Producto no encontrado.');
+        if (!product) {
+            return Error(`Producto con ID ${id} no encontrado.`);
+        }else{
+            this.products.splice(product, 1);
+            return console.log('Product eliminado correctamente', "lista de productos:" , this.getProducts()) ;
         }
-
-        const deletedProduct = this.products.splice(productIndex, 1)[0];
-        this.idMap.delete(id);
-
-        return deletedProduct;
+    
+    
     }
+    
+    
 
     findIndexById(id) {
         return this.products.findIndex((product) => product.id === id);
@@ -99,6 +104,8 @@ const newProduct1 = productManager.addProduct({
     title: 'Producto 1',
     description: 'Descripción 1',
     price: 100,
+    status: true,
+    category: 'category ej',
     thumbnail: 'Imagen 1',
     code: 'ABC123',
     stock: 20,
@@ -108,6 +115,8 @@ const newProduct2 = productManager.addProduct({
     title: 'Producto 2',
     description: 'Descripción 2',
     price: 1500,
+    status: true,
+    category: 'category ej',
     thumbnail: 'Imagen 2',
     code: 'DEF456',
     stock: 15,
@@ -117,6 +126,8 @@ const newProduct3 = productManager.addProduct({
     title: 'Producto 3',
     description: 'Descripción 3',
     price: 90,
+    status: true,
+    category: 'category ej',
     thumbnail: 'Imagen 2',
     code: 'DE6',
     stock: 15,
