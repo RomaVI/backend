@@ -68,16 +68,15 @@ class ProductManager {
     }
     
     deleteProduct(id) {
-        const product = this.products.find((product) => product.id === id);
-
-        if (!product) {
+        const productIndex = this.findIndexById(id);
+    
+        if (productIndex === -1) {
             return Error(`Producto con ID ${id} no encontrado.`);
-        }else{
-            this.products.splice(product, 1);
-            return console.log('Product eliminado correctamente', "lista de productos:" , this.getProducts()) ;
+        } else {
+            const deletedProduct = this.products.splice(productIndex, 1);
+            console.log('Producto eliminado correctamente', 'Lista de productos:', this.getProducts());
+            return deletedProduct[0];
         }
-    
-    
     }
     
     
@@ -106,7 +105,7 @@ const newProduct1 = productManager.addProduct({
     price: 100,
     status: true,
     category: 'category ej',
-    thumbnail: 'Imagen 1',
+    thumbnail: './public/1.jpg',
     code: 'ABC123',
     stock: 20,
 });
@@ -117,7 +116,7 @@ const newProduct2 = productManager.addProduct({
     price: 1500,
     status: true,
     category: 'category ej',
-    thumbnail: 'Imagen 2',
+    thumbnail: './public/1.jpg',
     code: 'DEF456',
     stock: 15,
 });
@@ -128,10 +127,12 @@ const newProduct3 = productManager.addProduct({
     price: 90,
     status: true,
     category: 'category ej',
-    thumbnail: 'Imagen 2',
+    thumbnail: './public/1.jpg',
     code: 'DE6',
     stock: 15,
 });
+
+
 
 
 

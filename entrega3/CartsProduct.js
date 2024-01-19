@@ -1,4 +1,4 @@
-const ProductManager = require("./ProductManager");
+const productManager = require("./ProductManager");
 
 class CartsProducts {
     constructor(productManager) {
@@ -57,7 +57,6 @@ class CartsProducts {
     }
 }
 
-const productManager = require("./ProductManager");
 const cartsProducts = new CartsProducts(productManager);
 
 
